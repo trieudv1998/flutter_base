@@ -1,9 +1,8 @@
-import 'package:flutter_base/data/repository/home_repository_impl.dart';
+import 'package:flutter_base/infrastructure/repository/home_repository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
 import 'di.config.dart';
-import 'domain/repository/home_repository.dart';
 
 final getIt = GetIt.instance;
 

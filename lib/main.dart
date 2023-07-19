@@ -1,17 +1,12 @@
-import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_base/core/constants/app_colors.dart';
-import 'package:flutter_base/core/utils/navigation_services.dart';
-import 'package:flutter_base/core/resources/client_provider.dart';
-import 'package:flutter_base/data/repository/home_repository_impl.dart';
+import 'package:flutter_base/core/domain/constants/app_colors.dart';
+import 'package:flutter_base/core/domain/resources/client_provider.dart';
+import 'package:flutter_base/core/domain/utils/navigation_services.dart';
 import 'package:flutter_base/di.dart';
-import 'package:flutter_base/domain/repository/home_repository.dart';
-import 'package:flutter_base/presenters/pages/home/cubit/home_cubit.dart';
-import 'package:flutter_base/presenters/routes/app_router.dart';
-import 'package:flutter_base/presenters/routes/init_router.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_base/presentation/routes/app_router.dart';
+import 'package:flutter_base/presentation/routes/init_router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -29,7 +24,7 @@ void main() async {
 
   runApp(EasyLocalization(
     supportedLocales: const [Locale('en', 'US'), Locale('vi', 'VN')],
-    path: 'lib/translations',
+    path: 'assets/translations',
     fallbackLocale: const Locale('vi', 'VN'),
     startLocale: const Locale('vi', 'VN'),
     child: const MyApp(),

@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_base/core/enum/load_status.dart';
-import 'package:flutter_base/core/resources/api_response.dart';
-import 'package:flutter_base/domain/entities/comment.dart';
-import 'package:flutter_base/domain/repository/home_repository.dart';
+import 'package:flutter_base/core/application/models/comment.dart';
+import 'package:flutter_base/core/domain/enum/load_status.dart';
+import 'package:flutter_base/core/domain/resources/api_response.dart';
+import 'package:flutter_base/infrastructure/repository/home_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'home_state.dart';

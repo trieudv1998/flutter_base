@@ -1,9 +1,15 @@
+
+
 import 'dart:io';
+
 import 'package:dio/dio.dart';
-import 'package:flutter_base/core/resources/api_response.dart';
-import 'package:flutter_base/core/resources/client_provider.dart';
-import 'package:flutter_base/data/models/comment.dart';
-import 'package:flutter_base/domain/repository/home_repository.dart';
+import 'package:flutter_base/core/application/models/comment.dart';
+import 'package:flutter_base/core/domain/resources/api_response.dart';
+import 'package:flutter_base/core/domain/resources/client_provider.dart';
+
+abstract class HomeRepository {
+  Future<ApiResponse<List<CommentModel>>> getComments();
+}
 
 class HomeRepositoryImpl implements HomeRepository {
   HomeRepositoryImpl();

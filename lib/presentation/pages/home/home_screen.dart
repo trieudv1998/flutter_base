@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/core/enum/load_status.dart';
-import 'package:flutter_base/presenters/pages/home/cubit/home_cubit.dart';
+import 'package:flutter_base/core/domain/enum/load_status.dart';
+import 'package:flutter_base/presentation/pages/home/cubit/home_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {

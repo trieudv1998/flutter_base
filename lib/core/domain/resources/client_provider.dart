@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_base/core/configs/app_configs.dart';
-import 'package:flutter_base/core/resources/dio_provider.dart';
-import 'package:flutter_base/data/api/api_client.dart';
+import 'package:flutter_base/core/application/api/api_client.dart';
+import 'package:flutter_base/core/domain/configs/app_configs.dart';
+import 'package:flutter_base/core/domain/resources/dio_provider.dart';
 
 class RestClientProvider {
   static ApiClient? apiClient;

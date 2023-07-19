@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_base/core/utils/check_connection_util.dart';
-import 'package:flutter_base/core/utils/logger.dart';
-import 'package:flutter_base/core/utils/navigation_services.dart';
-import 'package:flutter_base/core/utils/utils.dart';
+import 'package:flutter_base/core/domain/utils/check_connection_util.dart';
+import 'package:flutter_base/core/domain/utils/logger.dart';
+import 'package:flutter_base/core/domain/utils/navigation_services.dart';
+import 'package:flutter_base/core/domain/utils/utils.dart';
 
 Future<Dio> provideDio({Map<String, dynamic>? pHeaders, bool isNewVersion = false}) async {
   // Try to get access token. If existing, add this token to the http headers

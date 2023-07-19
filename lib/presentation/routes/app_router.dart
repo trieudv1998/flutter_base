@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/di.dart';
-import 'package:flutter_base/presenters/pages/home/cubit/home_cubit.dart';
-import 'package:flutter_base/presenters/pages/home/home_screen.dart';
-import 'package:flutter_base/presenters/pages/login/login_screen.dart';
-import 'package:flutter_base/presenters/routes/route_name.dart';
+import 'package:flutter_base/presentation/pages/home/cubit/home_cubit.dart';
+import 'package:flutter_base/presentation/pages/home/home_screen.dart';
+import 'package:flutter_base/presentation/pages/login/login_screen.dart';
+import 'package:flutter_base/presentation/routes/route_name.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppRoutes {
