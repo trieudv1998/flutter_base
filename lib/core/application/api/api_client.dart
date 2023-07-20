@@ -8,5 +8,5 @@ abstract class ApiClient {
   factory ApiClient(Dio dio, {String? baseUrl}) = _ApiClient;
 
   @GET('/comments')
-  Future<HttpResponse<List<CommentModel>>> getComments();
+  Future<List<CommentModel>> getComments();
 }

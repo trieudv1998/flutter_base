@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_base/core/application/models/comment.dart';
 import 'package:flutter_base/core/domain/enum/load_status.dart';
-import 'package:flutter_base/core/domain/resources/api_response.dart';
 import 'package:flutter_base/infrastructure/repository/home_repository.dart';
 import 'package:meta/meta.dart';
 
@@ -16,17 +16,17 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> getComments() async {
     emit(state.copyWith(commentStatus: LoadStatus.LOADING));
     try {
-      ApiResponse response = await homeRepository.getComments();
-
-      if (response is DataSuccess && response.data!.isNotEmpty) {
-        emit(state.copyWith(
-          commentStatus: LoadStatus.SUCCESS,
-          listComment: response.data,
-        ));
-        return;
-      }
-
-      emit(state.copyWith(commentStatus: LoadStatus.FAILURE));
+      final response = await homeRepository.getComments();
+      response.fold(
+          (l) => {
+                emit(state.copyWith(commentStatus: LoadStatus.FAILURE)),
+              },
+          (r) => {
+                emit(state.copyWith(
+                  commentStatus: LoadStatus.SUCCESS,
+                  listComment: r,
+                )),
+              });
     } catch (e, s) {
       emit(state.copyWith(commentStatus: LoadStatus.FAILURE));
     }
