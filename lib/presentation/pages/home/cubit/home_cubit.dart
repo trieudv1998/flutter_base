@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_base/core/application/models/comment.dart';
 import 'package:flutter_base/core/domain/enum/load_status.dart';
@@ -13,18 +14,18 @@ class HomeCubit extends Cubit<HomeState> {
 
   HomeCubit({required this.homeRepository}) : super(const HomeState());
 
-  Future<void> getComments() async {
+  Future<void> getComments({CancelToken? cancelToken}) async {
     emit(state.copyWith(commentStatus: LoadStatus.LOADING));
     try {
-      final response = await homeRepository.getComments();
+      final response = await homeRepository.getComments(cancelToken: cancelToken);
       response.fold(
-          (l) => {
+          (error) => {
                 emit(state.copyWith(commentStatus: LoadStatus.FAILURE)),
               },
-          (r) => {
+          (response) => {
                 emit(state.copyWith(
                   commentStatus: LoadStatus.SUCCESS,
-                  listComment: r,
+                  listComment: response,
                 )),
               });
     } catch (e, s) {

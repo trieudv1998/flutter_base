@@ -7,20 +7,21 @@ import 'package:flutter_base/core/domain/resources/client_provider.dart';
 import 'package:flutter_base/core/domain/resources/response_models.dart';
 
 abstract class HomeRepository {
-  Future<Either<ErrorModel, List<CommentModel>>> getComments();
+  Future<Either<ErrorModel, List<CommentModel>>> getComments({CancelToken? cancelToken});
 }
 
 class HomeRepositoryImpl implements HomeRepository {
   HomeRepositoryImpl();
 
   @override
-  Future<Either<ErrorModel, List<CommentModel>>> getComments() async {
+  Future<Either<ErrorModel, List<CommentModel>>> getComments({CancelToken? cancelToken}) async {
     try {
-      final response = await RestClientProvider.apiClient!.getComments();
+      final response = await RestClientProvider.apiClient!.getComments(cancelToken);
 
+      // handler response
       return Right(response);
-    } on DioError catch (e) {
 
+    } on DioError catch (e) {
       return Left(ErrorModel(message: e.toString()));
     }
   }

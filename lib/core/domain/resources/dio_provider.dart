@@ -86,9 +86,6 @@ Future<Dio> provideDio({Map<String, dynamic>? pHeaders, bool isNewVersion = fals
 }
 
 customHandleErrorByStatusCode(DioError e, ErrorInterceptorHandler handler) async {
-  if (kReleaseMode) {
-    AppLogger.instance.error(e.message);
-  }
   if (e.type == DioErrorType.cancel) {
     // Suppress this type of error, clear and move next
     e.error = "";
