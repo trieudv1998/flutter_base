@@ -33,19 +33,30 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home Page'),
+      ),
       body: BlocBuilder<HomeCubit, HomeState>(
         buildWhen: (previous, current) => (previous.commentStatus != current.commentStatus),
         builder: (context, state) {
           if (state.commentStatus == LoadStatus.FAILURE) {
-            return const Center(child: Text('Có lỗi xảy ra'));
+            return Center(child: Text(state.errorMessage ?? ''));
           }
           if (state.commentStatus == LoadStatus.SUCCESS) {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  for (int i = 0; i < state.listComment!.length; i++) ...[
-                    Text('- ${state.listComment?[i].email} \n' ?? ''),
-                  ]
+                  for (int i = 0; i < 5; i++) ...[
+                    Text('- ${state.listComment?[i].emailUser} \n' ?? ''),
+                  ],
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Go back!"),
+                    ),
+                  ),
                 ],
               ),
             );

@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/core/application/common/widgets/custom_dialog.dart';
 import 'package:flutter_base/core/domain/constants/app_colors.dart';
+import 'package:flutter_base/core/domain/resources/error_handler.dart';
 import 'package:flutter_base/core/domain/storages/global_storages.dart';
 import 'package:flutter_base/core/domain/utils/check_connection_util.dart';
 import 'package:flutter_base/core/domain/utils/logger.dart';
@@ -86,28 +87,12 @@ Future<Dio> provideDio({Map<String, dynamic>? pHeaders, bool isNewVersion = fals
 }
 
 customHandleErrorByStatusCode(DioError e, ErrorInterceptorHandler handler) async {
+  final errorMessage = DioExceptions.fromDioError(e).toString();
   if (e.type == DioErrorType.cancel) {
     // Suppress this type of error, clear and move next
     e.error = "";
     return;
   }
-  if (e.error is SocketException) {
-    // e.error = "Không thể kết nối tới server";
-    e.error = "";
-    return handler.next(e);
-  }
-  debugPrint("------- ERROR -------");
-  debugPrint(e.toString());
-  final currentContext = NavigationService.navigatorKey.currentContext;
-  if (currentContext != null) {
-    switch (e.response?.statusCode) {
-      case HttpStatus.unavailableForLegalReasons:
-      case HttpStatus.unauthorized:
-        break;
-      case HttpStatus.internalServerError:
-      default:
-        final errorMessage = 'URI:\n${e.requestOptions.uri}\nMethod:\n${e.requestOptions.method}\nQueryParameters:\n${e.requestOptions.queryParameters}\nData:\n${e.requestOptions.data}\nHeaders\n:${e.requestOptions.headers.toString()}';
-    }
-  }
+  e.error = errorMessage;
   return handler.next(e);
 }
