@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/core/domain/enum/load_status.dart';
 import 'package:flutter_base/presentation/pages/home/cubit/home_cubit.dart';
+import 'package:flutter_base/presentation/routes/route_name.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -40,7 +41,21 @@ class _HomeScreenState extends State<HomeScreen> {
         buildWhen: (previous, current) => (previous.commentStatus != current.commentStatus),
         builder: (context, state) {
           if (state.commentStatus == LoadStatus.FAILURE) {
-            return Center(child: Text(state.errorMessage ?? ''));
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  Center(child: Text(state.errorMessage ?? '')),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(RouteName.login);
+                      },
+                      child: const Text("Login"),
+                    ),
+                  ),
+                ],
+              ),
+            );
           }
           if (state.commentStatus == LoadStatus.SUCCESS) {
             return SingleChildScrollView(
@@ -52,9 +67,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pushNamed(RouteName.login);
                       },
-                      child: const Text("Go back!"),
+                      child: const Text("Login"),
                     ),
                   ),
                 ],

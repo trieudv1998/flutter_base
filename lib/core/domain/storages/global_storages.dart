@@ -5,4 +5,6 @@ class GlobalStorage {
   // Initial Widget
   static Widget initialRoute = const HomeScreen();
   static bool? haveDialogError = false;
+
+  static String accessToken = '';
 }

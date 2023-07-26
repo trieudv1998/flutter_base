@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesHelper {
   // as String
-  static const String USER_TOKEN = 'userToken';
+  static const String ACCESS_TOKEN = 'accessToken';
 
    /// Store String value locally.
   /// [key] The key of saved value, which will be used later when getting
@@ -21,5 +21,10 @@ class SharedPreferencesHelper {
     final preferences = await SharedPreferences.getInstance();
     final value = preferences.getString(key) ?? '';
     return value;
+  }
+
+  static Future<void> removeByKey(String key) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove(key);
   }
 }
