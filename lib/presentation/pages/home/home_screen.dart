@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   for (int i = 0; i < 5; i++) ...[
-                    Text('- ${state.listComment?[i].emailUser} \n' ?? ''),
+                    Text('- ${state.listComment?[i].email} \n' ?? ''),
                   ],
                   Center(
                     child: ElevatedButton(

@@ -7,7 +7,6 @@ import 'package:flutter_base/core/application/repositories/home_repository.dart'
 import 'package:flutter_base/core/domain/enum/load_status.dart';
 import 'package:flutter_base/core/domain/resources/response_models.dart';
 import 'package:flutter_base/core/domain/utils/logger.dart';
-import 'package:flutter_base/infrastructure/entities/comment.dart';
 import 'package:flutter_base/infrastructure/repositories/home_repository.dart';
 import 'package:meta/meta.dart';
 
@@ -33,7 +32,7 @@ class HomeCubit extends Cubit<HomeState> {
         (response) => {
           emit(state.copyWith(
             commentStatus: LoadStatus.SUCCESS,
-            listComment: response.map((e) => e.toEntity()).toList(),
+            listComment: response.toList(),
           )),
         },
       );

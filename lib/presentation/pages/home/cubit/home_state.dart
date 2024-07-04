@@ -3,7 +3,7 @@ part of 'home_cubit.dart';
 @immutable
 class HomeState extends Equatable {
   final LoadStatus? commentStatus;
-  final List<CommentEntity>? listComment;
+  final List<CommentModel>? listComment;
   final String? errorMessage;
 
   const HomeState({
@@ -15,7 +15,7 @@ class HomeState extends Equatable {
 
   HomeState copyWith({
     LoadStatus? commentStatus,
-    List<CommentEntity>? listComment,
+    List<CommentModel>? listComment,
     String? errorMessage,
   }) {
     return HomeState(
