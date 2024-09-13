@@ -4,6 +4,7 @@ import 'package:flutter_base/core/domain/enum/load_status.dart';
 import 'package:flutter_base/presentation/pages/home/cubit/home_cubit.dart';
 import 'package:flutter_base/presentation/routes/route_name.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,13 +16,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late HomeCubit _homeCubit;
   CancelToken? _cancelToken;
+  late GoogleMapController mapController;
+
+  final LatLng _center = const LatLng(21.030797, 105.786903);
 
   @override
   void initState() {
     super.initState();
     _cancelToken = CancelToken();
     _homeCubit = BlocProvider.of<HomeCubit>(context);
-    _homeCubit.getComments(cancelToken: _cancelToken);
   }
 
   @override
@@ -31,54 +34,27 @@ class _HomeScreenState extends State<HomeScreen> {
     _cancelToken = null;
   }
 
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Page'),
-      ),
-      body: BlocBuilder<HomeCubit, HomeState>(
-        buildWhen: (previous, current) => (previous.commentStatus != current.commentStatus),
-        builder: (context, state) {
-          if (state.commentStatus == LoadStatus.FAILURE) {
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  Center(child: Text(state.errorMessage ?? '')),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(RouteName.login);
-                      },
-                      child: const Text("Login"),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
-          if (state.commentStatus == LoadStatus.SUCCESS) {
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  for (int i = 0; i < 5; i++) ...[
-                    Text('- ${state.listComment?[i].email} \n' ?? ''),
-                  ],
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(RouteName.login);
-                      },
-                      child: const Text("Login"),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
-          return Container();
-        },
-      ),
+      body: GoogleMap(
+        compassEnabled: true,
+        myLocationButtonEnabled: true,
+        myLocationEnabled: true,
+        zoomControlsEnabled: false,
+        zoomGesturesEnabled: true,
+        mapType: MapType.normal,
+        onMapCreated: _onMapCreated,
+        initialCameraPosition: CameraPosition(
+          target: _center,
+          zoom: 11.0,
+
+        ),
+      )
     );
   }
 }

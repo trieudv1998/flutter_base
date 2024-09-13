@@ -43,28 +43,7 @@ Future<Dio> provideDio({Map<String, dynamic>? pHeaders, bool isNewVersion = fals
         //TODO: handler show modal network
         if (GlobalStorage.haveDialogError == false) {
           GlobalStorage.haveDialogError = true;
-          showCustomDialog(
-            NavigationService.navigatorKey.currentContext!,
-            hideNegativeButton: true,
-            onPressPositive: () async {
-              final bool isNetworkAvailable = await checkConnection();
-              if (isNetworkAvailable) {
-                final globalContext = NavigationService.navigatorKey.currentContext!;
-                Navigator.of(globalContext).pop();
-                GlobalStorage.haveDialogError = false;
-              }
-            },
-            showCloseButton: false,
-            title: 'Không có kết nối',
-            content: Text(
-              'Không có kết nối',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w400, color: AppColors.b200),
-            ),
-            textPositive: 'Thử lại',
-            barrierDismissible: false,
-            preventBack: true,
-          );
+          showPopUpNetworkError();
         }
         return handler.next(options.copyWith(data: 'Connection Failed'));
       }
@@ -95,4 +74,29 @@ customHandleErrorByStatusCode(DioError e, ErrorInterceptorHandler handler) async
   }
   e.error = errorMessage;
   return handler.next(e);
+}
+
+void showPopUpNetworkError() {
+  showCustomDialog(
+    NavigationService.navigatorKey.currentContext!,
+    hideNegativeButton: true,
+    onPressPositive: () async {
+      final bool isNetworkAvailable = await checkConnection();
+      if (isNetworkAvailable) {
+        final globalContext = NavigationService.navigatorKey.currentContext!;
+        Navigator.of(globalContext).pop();
+        GlobalStorage.haveDialogError = false;
+      }
+    },
+    showCloseButton: false,
+    title: 'Không có kết nối',
+    content: Text(
+      'Không có kết nối',
+      textAlign: TextAlign.center,
+      style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w400, color: AppColors.b200),
+    ),
+    textPositive: 'Thử lại',
+    barrierDismissible: false,
+    preventBack: true,
+  );
 }

@@ -194,8 +194,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             opacity: state.isEnable == true ? 1 : 0.2,
                             child: GestureDetector(
                               onTap: state.isEnable == true
-                                  ? () {
-                                      _cubit.login(cancelToken: _cancelToken);
+                                  ? () async {
+                                      await _cubit.login(cancelToken: _cancelToken);
                                       Navigator.of(context).pushNamedAndRemoveUntil(
                                         RouteName.rootScreen,
                                         (Route<dynamic> route) => false,
