@@ -3,8 +3,8 @@
 A new Flutter project.
 
 ## Require
-- Flutter: 3.3.9
-- Dart SDK: 2.18.5
+- Flutter: 3.19.5
+- Dart SDK: 3.3.3
 
 ## Getting Started
 `flutter pub get`
