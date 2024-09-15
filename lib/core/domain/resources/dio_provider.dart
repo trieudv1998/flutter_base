@@ -1,12 +1,10 @@
 import 'dart:io';
-
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/core/application/common/widgets/custom_dialog.dart';
 import 'package:flutter_base/core/domain/constants/app_colors.dart';
-import 'package:flutter_base/core/domain/resources/error_handler.dart';
 import 'package:flutter_base/core/domain/storages/global_storages.dart';
 import 'package:flutter_base/core/domain/utils/check_connection_util.dart';
 import 'package:flutter_base/core/domain/utils/logger.dart';
@@ -25,14 +23,15 @@ Future<Dio> provideDio({Map<String, dynamic>? pHeaders, bool isNewVersion = fals
 
   final BaseOptions options = BaseOptions(
     headers: headers,
-    connectTimeout: 60 * 1000,
-    receiveTimeout: 60 * 1000,
+    connectTimeout: const Duration(milliseconds: 60 * 1000),
+    receiveTimeout: const Duration(milliseconds: 60 * 1000),
   );
 
   final Dio dio = Dio(options);
   //TO DO :by pass certificate
-  (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
-    client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
+    final client = HttpClient();
+    client.badCertificateCallback = (cert, host, port) => true;
     return client;
   };
   //-------------------------
@@ -65,15 +64,27 @@ Future<Dio> provideDio({Map<String, dynamic>? pHeaders, bool isNewVersion = fals
   return dio;
 }
 
-customHandleErrorByStatusCode(DioError e, ErrorInterceptorHandler handler) async {
-  final errorMessage = DioExceptions.fromDioError(e).toString();
-  if (e.type == DioErrorType.cancel) {
+customHandleErrorByStatusCode(DioException err, ErrorInterceptorHandler handler) async {
+  if (err.type == DioExceptionType.cancel) {
     // Suppress this type of error, clear and move next
-    e.error = "";
     return;
   }
-  e.error = errorMessage;
-  return handler.next(e);
+  // Check if the user is unauthorized.
+  if (err.response?.statusCode == 401) {
+    // Refresh the user's authentication token.
+    // await refreshToken();
+    // Retry the request.
+    try {
+      // handler.resolve(await _retry(err.requestOptions));
+    } on DioException catch (e) {
+      // If the request fails again, pass the error to the next interceptor in the chain.
+      handler.next(e);
+    }
+    // Return to prevent the next interceptor in the chain from being executed.
+    return;
+  }
+  // Pass the error to the next interceptor in the chain.
+  handler.next(err);
 }
 
 void showPopUpNetworkError() {
