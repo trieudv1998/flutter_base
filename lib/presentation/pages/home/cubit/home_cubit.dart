@@ -3,6 +3,8 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_base/core/application/models/comment.dart';
+import 'package:flutter_base/core/application/models/direction.dart';
+import 'package:flutter_base/core/application/models/get_direction.dart';
 import 'package:flutter_base/core/application/repositories/home_repository.dart';
 import 'package:flutter_base/core/domain/enum/load_status.dart';
 import 'package:flutter_base/core/domain/resources/response_models.dart';
@@ -42,6 +44,25 @@ class HomeCubit extends Cubit<HomeState> {
         errorMessage: e.toString(),
       ));
       AppLogger.instance.error(e);
+    }
+  }
+  Future<dynamic> getDirections({GetDirection? queryParams,CancelToken? cancelToken}) async {
+    try {
+      var result;
+      Either<ErrorModel, Direction> response = await homeRepository.getDirections(queryParams:queryParams,cancelToken: cancelToken);
+      response.fold(
+            (error) => {
+          AppLogger.instance.error(error.message),
+              result = null,
+        },
+            (response) => {
+          result = response,
+        },
+      );
+      return result;
+    } catch (e, s) {
+      AppLogger.instance.error(e);
+      return null;
     }
   }
 }
