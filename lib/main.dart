@@ -61,27 +61,27 @@ class _MyAppState extends State<MyApp> {
         onGenerateRoute: _appRoute.onGenerateRoute,
         theme: ThemeData(
           textTheme: TextTheme(
-            headline1: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            headline2: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            headline3: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            headline4: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            headline5: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            headline6: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            subtitle1: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            subtitle2: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            bodyText1: GoogleFonts.manrope(
+            displayLarge: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
+            displayMedium: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
+            displaySmall: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
+            headlineMedium: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
+            headlineSmall: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
+            titleLarge: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
+            titleMedium: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
+            titleSmall: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
+            bodyLarge: GoogleFonts.manrope(
               fontSize: 15.sp,
               color: AppColors.b100,
               height: 1.5,
             ),
-            bodyText2: GoogleFonts.manrope(
+            bodyMedium: GoogleFonts.manrope(
               fontSize: 15.sp,
               color: AppColors.b100,
               height: 1.5,
             ),
-            caption: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            button: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            overline: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
+            bodySmall: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
+            labelLarge: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
+            labelSmall: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
           ),
           appBarTheme: const AppBarTheme(
             systemOverlayStyle: SystemUiOverlayStyle.dark,
