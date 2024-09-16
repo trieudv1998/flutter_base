@@ -1,3 +1,8 @@
+import 'dart:async';
+import 'dart:collection';
+import 'dart:io';
+import 'dart:math' as Math;
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -9,14 +14,14 @@ class SafeAreaScreen extends StatefulWidget {
 }
 
 class _SafeAreaScreenState extends State<SafeAreaScreen> {
-  late GoogleMapController mapController;
+  static final Completer<GoogleMapController> _controller = Completer();
 
-  List<Map<String, double>>? mapPoints;
-  GoogleMapController? _mapController;
+  final Set<Polygon> _polygons = HashSet<Polygon>();
+  final Set<Polyline> _polyLines = HashSet<Polyline>();
 
-  bool isDrawing = false;
-  List<Polygon> polygons = [];
-  List<Offset> points = []; // List of points in Offset
+  bool _drawPolygonEnabled = false;
+  List<LatLng> _userPolyLinesLatLngList = [];
+  bool _clearDrawing = false;
 
   @override
   void initState() {
@@ -28,39 +33,86 @@ class _SafeAreaScreenState extends State<SafeAreaScreen> {
     super.dispose();
   }
 
-  // Converts List<Offset> to List<LatLng>
-  Future<List<LatLng>> _convertOffsetsToLatLngs() async {
-    List<LatLng> latLngs = [];
-    if (_mapController == null) return latLngs;
-
-    for (Offset offset in points) {
-      ScreenCoordinate screenCoordinate = ScreenCoordinate(
-        x: offset.dx.toInt(),
-        y: offset.dy.toInt(),
-      );
-
-      // Convert screen coordinates to LatLng
-      LatLng latLng = await _mapController!.getLatLng(screenCoordinate);
-      latLngs.add(latLng);
-    }
-    return latLngs;
+  _toggleDrawing() {
+    _clearPolygons();
+    setState(() => _drawPolygonEnabled = !_drawPolygonEnabled);
   }
 
-  // Add polygon to Google Map using converted LatLng points
-  Future<void> _addPolygon() async {
-    if (points.isEmpty || _mapController == null) return;
+  _onPanUpdate(DragUpdateDetails details) async {
+    // To start draw new polygon every time.
+    if (_clearDrawing) {
+      _clearDrawing = false;
+      _clearPolygons();
+    }
 
-    List<LatLng> latLngs = await _convertOffsetsToLatLngs();
+    if (_drawPolygonEnabled) {
+      late double x, y;
+      if (Platform.isAndroid) {
+        // It times in 3 without any meaning,
+        // We think it's an issue with GoogleMaps package.
+        x = details.globalPosition.dx * 3;
+        y = details.globalPosition.dy * 3;
+      } else if (Platform.isIOS) {
+        x = details.globalPosition.dx;
+        y = details.globalPosition.dy;
+      }
+
+      // Round the x and y.
+      int xCoordinate = x.round();
+      int yCoordinate = y.round();
+
+      // Check if the distance between last point is not too far.
+      // to prevent two fingers drawing.
+
+      ScreenCoordinate screenCoordinate = ScreenCoordinate(x: xCoordinate, y: yCoordinate);
+
+      final GoogleMapController controller = await _controller.future;
+      LatLng latLng = await controller.getLatLng(screenCoordinate);
+
+      try {
+        // Add new point to list.
+        _userPolyLinesLatLngList.add(latLng);
+
+        _polyLines.removeWhere((polyline) => polyline.polylineId.value == 'user_polyline');
+        _polyLines.add(
+          Polyline(
+            polylineId: PolylineId('user_polyline'),
+            points: _userPolyLinesLatLngList,
+            width: 2,
+            color: Colors.blue,
+          ),
+        );
+      } catch (e) {
+        print(" error painting $e");
+      }
+      setState(() {});
+    }
+  }
+
+  _onPanEnd(DragEndDetails details) async {
+
+    if (_drawPolygonEnabled) {
+      _polygons.removeWhere((polygon) => polygon.polygonId.value == 'user_polygon');
+      _polygons.add(
+        Polygon(
+          polygonId: PolygonId('user_polygon'),
+          points: _userPolyLinesLatLngList,
+          strokeWidth: 4,
+          strokeColor: Colors.blue,
+          fillColor: Colors.blue.withOpacity(0.4),
+        ),
+      );
+      setState(() {
+        _clearDrawing = true;
+      });
+    }
+  }
+
+  _clearPolygons() {
     setState(() {
-      polygons.add(Polygon(
-        polygonId: PolygonId('polygon_${polygons.length}'),
-        points: latLngs,
-        strokeColor: Colors.blue,
-        fillColor: Colors.blue.withOpacity(0.3),
-        strokeWidth: 4,
-      ));
-
-      points.clear(); // Clear the points after adding the polygon
+      _polyLines.clear();
+      _polygons.clear();
+      _userPolyLinesLatLngList.clear();
     });
   }
 
@@ -70,83 +122,29 @@ class _SafeAreaScreenState extends State<SafeAreaScreen> {
       body: Stack(
         children: [
           // Google Map Widget
-          GoogleMap(
-            initialCameraPosition: const CameraPosition(
-              target: LatLng(21.030817, 105.786882),
-              zoom: 11,
-            ),
-            polygons: Set.from(polygons),
-            onMapCreated: (controller) {
-              _mapController = controller;
-            },
-          ),
-
-          // Draw Polygon on top of the map
-          if (isDrawing)
-            GestureDetector(
-              onPanStart: (details) {
-                setState(() {
-                  points = [details.localPosition];
-                });
-              },
-              onPanUpdate: (details) {
-                setState(() {
-                  points.add(details.localPosition);
-                });
-              },
-              onPanEnd: (details) {
-                setState(() {
-                  points.add(points.first); // Close the polygon
-                  isDrawing = false;
-                });
-                _addPolygon(); // Add the polygon to the map
-              },
-              child: CustomPaint(
-                painter: PolygonPainter(points),
-                child: Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                ),
+          GestureDetector(
+            onPanUpdate: (_drawPolygonEnabled) ? _onPanUpdate : null,
+            onPanEnd: (_drawPolygonEnabled) ? _onPanEnd : null,
+            child: GoogleMap(
+              mapType: MapType.normal,
+              initialCameraPosition: const CameraPosition(
+                target: LatLng(21.030917, 105.786860),
+                zoom: 11,
               ),
+              polygons: _polygons,
+              polylines: _polyLines,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
             ),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.edit),
-        onPressed: () {
-          setState(() {
-            isDrawing = true;
-          });
-        },
+        onPressed: _toggleDrawing,
       ),
 
     );
   }
-}
-
-// Custom Painter to display polygon drawing on screen
-class PolygonPainter extends CustomPainter {
-  final List<Offset> points;
-
-  PolygonPainter(this.points);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    if (points.isEmpty) return;
-
-    Paint paint = Paint()
-      ..color = Colors.blue
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 4.0;
-
-    Path path = Path()..moveTo(points[0].dx, points[0].dy);
-    for (var point in points) {
-      path.lineTo(point.dx, point.dy);
-    }
-    path.close(); // Close the path to form the polygon
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
