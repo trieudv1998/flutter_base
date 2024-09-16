@@ -355,23 +355,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<dynamic> _getDirections(
       LatLng origin, LatLng destination) async {
-    // final dio = Dio();
-    // final response = await dio.get(
-    //   'https://maps.googleapis.com/maps/api/directions/json',
-    //   queryParameters: {
-    //     'origin': '${origin.latitude},${origin.longitude}',
-    //     'destination': '${destination.latitude},${destination.longitude}',
-    //     'key': 'AIzaSyAgdgBJdiCBuMc8kQiUSD2aUK0IJm59HBU',
-    //     'mode': 'driving',
-    //     'alternatives': 'true', // Yêu cầu trả về nhiều tuyến đường
-    //   },
-    // );
-    // if (response.statusCode == 200) {
-    //   print("alo");
-    //   print(response.data);
-    //   return response.data;
-    // }
-    // return null;
     final directions = await _homeCubit.getDirections(
       queryParams: GetDirection(
         origin: '${origin.latitude},${origin.longitude}',
