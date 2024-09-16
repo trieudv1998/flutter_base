@@ -8,6 +8,8 @@ import 'package:flutter_base/presentation/pages/login/login_screen.dart';
 import 'package:flutter_base/presentation/routes/route_name.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../pages/safe_area/safe_area_screen.dart';
+
 class AppRoutes {
   Route? onGenerateRoute(RouteSettings routeSettings) {
     final arguments = routeSettings.arguments;
@@ -28,6 +30,9 @@ class AppRoutes {
               return LoginCubit(authRepository: getIt());
             },
             child: const LoginScreen());
+        break;
+      case RouteName.safeAreaScreen: //login screen
+        _routeWidget = const SafeAreaScreen();
         break;
       default:
         _routeWidget;
