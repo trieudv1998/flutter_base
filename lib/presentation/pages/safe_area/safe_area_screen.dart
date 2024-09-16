@@ -73,7 +73,7 @@ class _SafeAreaScreenState extends State<SafeAreaScreen> {
           GoogleMap(
             initialCameraPosition: const CameraPosition(
               target: LatLng(21.030817, 105.786882),
-              zoom: 14,
+              zoom: 11,
             ),
             polygons: Set.from(polygons),
             onMapCreated: (controller) {
