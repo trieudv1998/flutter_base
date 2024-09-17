@@ -4,7 +4,10 @@ import 'dart:io';
 import 'dart:math' as Math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../../../core/domain/constants/app_colors.dart';
 
 class SafeAreaScreen extends StatefulWidget {
   const SafeAreaScreen({super.key});
@@ -78,7 +81,7 @@ class _SafeAreaScreenState extends State<SafeAreaScreen> {
           Polyline(
             polylineId: PolylineId('user_polyline'),
             points: _userPolyLinesLatLngList,
-            width: 2,
+            width: 4,
             color: Colors.blue,
           ),
         );
@@ -90,7 +93,6 @@ class _SafeAreaScreenState extends State<SafeAreaScreen> {
   }
 
   _onPanEnd(DragEndDetails details) async {
-
     if (_drawPolygonEnabled) {
       _polygons.removeWhere((polygon) => polygon.polygonId.value == 'user_polygon');
       _polygons.add(
@@ -119,32 +121,76 @@ class _SafeAreaScreenState extends State<SafeAreaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // Google Map Widget
-          GestureDetector(
-            onPanUpdate: (_drawPolygonEnabled) ? _onPanUpdate : null,
-            onPanEnd: (_drawPolygonEnabled) ? _onPanEnd : null,
-            child: GoogleMap(
-              mapType: MapType.normal,
-              initialCameraPosition: const CameraPosition(
-                target: LatLng(21.030917, 105.786860),
-                zoom: 11,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: Container(
+            height: 40.w,
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(8.w),
+              boxShadow: const <BoxShadow>[BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.08), blurRadius: 16.0, offset: Offset(0, 4))],
+            ),
+            child: Center(child: Text('Safe zone'))),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Container(
+            width: 40.w,
+            height: 40.w,
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(8.w),
+              boxShadow: const <BoxShadow>[BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.08), blurRadius: 16.0, offset: Offset(0, 4))],
+            ),
+            child: Icon(Icons.arrow_back),
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              _toggleDrawing();
+            },
+            icon: Container(
+              width: 40.w,
+              height: 40.w,
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(8.w),
+                boxShadow: const <BoxShadow>[BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.08), blurRadius: 16.0, offset: Offset(0, 4))],
               ),
-              polygons: _polygons,
-              polylines: _polyLines,
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
+              child: Icon(Icons.edit),
             ),
           ),
         ],
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.edit),
-        onPressed: _toggleDrawing,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return Stack(
+            children: [
+              // Google Map Widget
+              GestureDetector(
+                onPanUpdate: (_drawPolygonEnabled) ? _onPanUpdate : null,
+                onPanEnd: (_drawPolygonEnabled) ? _onPanEnd : null,
+                child: GoogleMap(
+                  mapType: MapType.normal,
+                  initialCameraPosition: const CameraPosition(
+                    target: LatLng(21.030917, 105.786860),
+                    zoom: 11,
+                  ),
+                  polygons: _polygons,
+                  polylines: _polyLines,
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller.complete(controller);
+                  },
+                ),
+              ),
+            ],
+          );
+        },
       ),
-
     );
   }
 }
