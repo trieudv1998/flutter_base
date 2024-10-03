@@ -2,34 +2,24 @@ part of 'home_cubit.dart';
 
 @immutable
 class HomeState extends Equatable {
-  final LoadStatus? commentStatus;
-  final List<CommentModel>? listComment;
-  final String? errorMessage;
+  final LoadStatus? status;
 
   const HomeState({
     /// get order detail
-    this.commentStatus,
-    this.listComment,
-    this.errorMessage,
+    this.status,
   });
 
   HomeState copyWith({
-    LoadStatus? commentStatus,
-    List<CommentModel>? listComment,
-    String? errorMessage,
+    LoadStatus? status,
   }) {
     return HomeState(
       /// get order detail
-      commentStatus: commentStatus ?? this.commentStatus,
-      listComment: listComment ?? this.listComment,
-      errorMessage: errorMessage ?? this.errorMessage,
+      status: status ?? this.status,
     );
   }
 
   @override
   List<Object?> get props => [
-        commentStatus,
-        listComment,
-        errorMessage,
+        status,
       ];
 }

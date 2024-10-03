@@ -60,6 +60,10 @@ dependencies:
   dartz: ^0.10.1
   google_maps_flutter: 2.6.0
 
+  dropdown_button2: ^2.3.9
+  table_calendar: ^3.0.8
+  multi_dropdown: ^3.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

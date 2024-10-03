@@ -104,7 +104,7 @@ void showPopUpNetworkError() {
     content: Text(
       'Không có kết nối',
       textAlign: TextAlign.center,
-      style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w400, color: AppColors.b200),
+      style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w400, color: AppColors.danger100),
     ),
     textPositive: 'Thử lại',
     barrierDismissible: false,

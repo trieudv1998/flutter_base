@@ -1,14 +1,9 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/di.dart';
 import 'package:flutter_base/presentation/pages/home/cubit/home_cubit.dart';
 import 'package:flutter_base/presentation/pages/home/home_screen.dart';
-import 'package:flutter_base/presentation/pages/login/cubit/login_cubit.dart';
-import 'package:flutter_base/presentation/pages/login/login_screen.dart';
 import 'package:flutter_base/presentation/routes/route_name.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../pages/safe_area/safe_area_screen.dart';
 
 class AppRoutes {
   Route? onGenerateRoute(RouteSettings routeSettings) {
@@ -23,16 +18,6 @@ class AppRoutes {
               return HomeCubit(homeRepository: getIt());
             },
             child: initialWidget);
-        break;
-      case RouteName.login: //login screen
-        _routeWidget = BlocProvider(
-            create: (context) {
-              return LoginCubit(authRepository: getIt());
-            },
-            child: const LoginScreen());
-        break;
-      case RouteName.safeAreaScreen: //login screen
-        _routeWidget = const SafeAreaScreen();
         break;
       default:
         _routeWidget;

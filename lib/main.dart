@@ -6,7 +6,6 @@ import 'package:flutter_base/core/domain/resources/client_provider.dart';
 import 'package:flutter_base/core/domain/utils/navigation_services.dart';
 import 'package:flutter_base/di.dart';
 import 'package:flutter_base/presentation/routes/app_router.dart';
-import 'package:flutter_base/presentation/routes/init_router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -18,9 +17,6 @@ void main() async {
 
   // Read url from env and use for baseUrl in init
   await RestClientProvider.init();
-
-  // Initial Widget
-  await InitRoute().getInitialRoute();
 
   runApp(EasyLocalization(
     supportedLocales: const [Locale('en', 'US'), Locale('vi', 'VN')],
@@ -61,27 +57,27 @@ class _MyAppState extends State<MyApp> {
         onGenerateRoute: _appRoute.onGenerateRoute,
         theme: ThemeData(
           textTheme: TextTheme(
-            displayLarge: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            displayMedium: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            displaySmall: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            headlineMedium: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            headlineSmall: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            titleLarge: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            titleMedium: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            titleSmall: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
+            displayLarge: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.grey800),
+            displayMedium: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.grey800),
+            displaySmall: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.grey800),
+            headlineMedium: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.grey800),
+            headlineSmall: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.grey800),
+            titleLarge: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.grey800),
+            titleMedium: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.grey800),
+            titleSmall: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.grey800),
             bodyLarge: GoogleFonts.manrope(
               fontSize: 15.sp,
-              color: AppColors.b100,
+              color: AppColors.grey800,
               height: 1.5,
             ),
             bodyMedium: GoogleFonts.manrope(
               fontSize: 15.sp,
-              color: AppColors.b100,
+              color: AppColors.grey800,
               height: 1.5,
             ),
-            bodySmall: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            labelLarge: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
-            labelSmall: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.b100),
+            bodySmall: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.grey800),
+            labelLarge: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.grey800),
+            labelSmall: GoogleFonts.manrope(fontSize: 15.sp, color: AppColors.grey800),
           ),
           appBarTheme: const AppBarTheme(
             systemOverlayStyle: SystemUiOverlayStyle.dark,
