@@ -1,13 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_base/core/application/models/login.dart';
-import 'package:flutter_base/core/application/repositories/auth_repository.dart';
-import 'package:flutter_base/core/domain/resources/client_provider.dart';
-import 'package:flutter_base/core/domain/resources/object_response.dart';
-import 'package:flutter_base/core/domain/resources/response_models.dart';
+import 'package:flutter_base/core/data_source/client_provider.dart';
+import 'package:flutter_base/core/data_source/object_response.dart';
+import 'package:flutter_base/core/data_source/response_models.dart';
+import 'package:flutter_base/core/dto/login.dart';
+import 'package:flutter_base/core/repositories/auth_repository.dart';
 
-class AuthRepository extends IAuthRepository {
-  AuthRepository();
+class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Future<Either<ErrorModel, ObjectResponse<LoginResponseModel>>> login({CancelToken? cancelToken}) async {

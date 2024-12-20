@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_base/core/domain/constants/app_colors.dart';
-import 'package:flutter_base/core/domain/resources/client_provider.dart';
-import 'package:flutter_base/core/domain/utils/navigation_services.dart';
+import 'package:flutter_base/core/constants/app_colors.dart';
+import 'package:flutter_base/core/data_source/client_provider.dart';
+import 'package:flutter_base/core/services/navigation_services.dart';
 import 'package:flutter_base/di.dart';
 import 'package:flutter_base/presentation/routes/app_router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

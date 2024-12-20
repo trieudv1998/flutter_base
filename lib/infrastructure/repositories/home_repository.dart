@@ -1,6 +1,6 @@
 
-import 'package:flutter_base/core/application/repositories/home_repository.dart';
 
-class HomeRepository extends IHomeRepository {
-  HomeRepository();
+import 'package:flutter_base/core/repositories/home_repository.dart';
+
+class HomeRepositoryImpl extends HomeRepository {
 }
