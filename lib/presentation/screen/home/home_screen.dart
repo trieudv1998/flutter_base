@@ -11,14 +11,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late HomeCubit _homeCubit;
+  // late HomeCubit _homeCubit;
   CancelToken? _cancelToken;
 
   @override
   void initState() {
     super.initState();
     _cancelToken = CancelToken();
-    _homeCubit = BlocProvider.of<HomeCubit>(context);
+    // _homeCubit = BlocProvider.of<HomeCubit>(context);
   }
 
   @override
